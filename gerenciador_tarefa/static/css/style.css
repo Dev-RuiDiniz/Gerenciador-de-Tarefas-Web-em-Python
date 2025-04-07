@@ -1,0 +1,215 @@
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4895ef;
+    --danger-color: #f72585;
+    --warning-color: #f8961e;
+    --success-color: #4cc9f0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --gray-color: #6c757d;
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--dark-color);
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1200px;
+    padding: 2rem;
+  }
+  
+  /* Header e Títulos */
+  h1, h2, h3 {
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+  }
+  
+  /* Botões */
+  .btn {
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    box-shadow: var(--shadow);
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+  
+  .btn-secondary {
+    background-color: var(--gray-color);
+  }
+  
+  .btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+  }
+  
+  .btn-success {
+    background-color: var(--success-color);
+  }
+  
+  .btn-success:hover {
+    background-color: #3aa8d8;
+    transform: translateY(-2px);
+  }
+  
+  /* Cards e Forms */
+  .card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border: none;
+    transition: var(--transition);
+    margin-bottom: 2rem;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+    transition: var(--transition);
+  }
+  
+  .form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+  }
+  
+  /* Tabelas */
+  .table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  
+  .table thead th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    border: none;
+  }
+  
+  .table tbody tr {
+    transition: var(--transition);
+  }
+  
+  .table tbody tr:hover {
+    background-color: rgba(67, 97, 238, 0.05);
+    transform: scale(1.01);
+  }
+  
+  /* Badges */
+  .badge {
+    padding: 0.5em 0.75em;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  
+  .bg-danger {
+    background-color: var(--danger-color) !important;
+  }
+  
+  .bg-warning {
+    background-color: var(--warning-color) !important;
+  }
+  
+  .bg-success {
+    background-color: var(--success-color) !important;
+  }
+  
+  /* Alertas */
+  .alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: var(--shadow);
+  }
+  
+  .alert-danger {
+    background-color: var(--danger-color);
+    color: white;
+  }
+  
+  .alert-warning {
+    background-color: var(--warning-color);
+    color: white;
+  }
+  
+  .alert-success {
+    background-color: var(--success-color);
+    color: white;
+  }
+  
+  /* Efeitos para tarefas */
+  .table-danger {
+    background-color: rgba(247, 37, 133, 0.1) !important;
+    border-left: 4px solid var(--danger-color);
+  }
+  
+  .table-warning {
+    background-color: rgba(248, 150, 30, 0.1) !important;
+    border-left: 4px solid var(--warning-color);
+  }
+  
+  /* Navbar (se quiser adicionar depois) */
+  .navbar {
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow);
+    border-radius: 0 0 12px 12px;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    .table-responsive {
+      border-radius: 8px;
+    }
+    
+    .btn {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  /* Animação de entrada */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .card, .table {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
