@@ -1,27 +1,98 @@
-# Gerenciador_de_Tarefas_Web
-Gerenciador de Tarefas Web em Python
+Gerenciador de Tarefas Web
+Python
+HTML5
+Bootstrap
 
-Funcionalidades Implementadas
-Cadastro de Tarefas:
+Um sistema web completo para gerenciamento de tarefas pessoais ou profissionais, desenvolvido com Python no backend e HTML/Bootstrap no frontend.
 
-Nome, descrição e data de entrega
+✨ Funcionalidades Principais
+Cadastro Inteligente de Tarefas
 
-Validação para datas no passado
+Registro com nome, descrição detalhada e data de entrega
 
-Alertas de Prazo:
+Validação automática para evitar datas no passado
 
-Tarefas com menos de 2 dias para o prazo são destacadas em amarelo
+Sistema de Alertas Visuais
 
-Tarefas atrasadas são destacadas em vermelho
+🟡 Destaque amarelo para tarefas com menos de 2 dias para o prazo
 
-Histórico Completo:
+🔴 Destaque vermelho para tarefas atrasadas
 
-Armazena nome da tarefa, datas de criação, entrega e conclusão
+✅ Indicador visual para tarefas concluídas
 
-Status (no prazo ou atrasada)
+Histórico Completo
 
-Dias que levou para ser realizada
+Armazenamento de todos os dados da tarefa:
 
-Interface Responsiva:
+Nome e descrição
 
-Usando Bootstrap 5 para um design moderno e adaptável
+Data de criação, entrega e conclusão
+
+Status (no prazo/atrasada)
+
+Tempo total de execução (dias)
+
+Interface Moderna
+
+Design responsivo que se adapta a qualquer dispositivo
+
+Componentes Bootstrap 5 para experiência de usuário aprimorada
+
+Navegação intuitiva e organização visual clara
+
+🛠️ Tecnologias Utilizadas
+Backend
+
+Python 3.8+
+
+Flask (para roteamento e lógica de aplicação)
+
+SQLite (banco de dados embutido)
+
+Frontend
+
+HTML5 semântico
+
+CSS3 com Bootstrap 5
+
+JavaScript básico para interações
+
+📦 Pré-requisitos
+Python 3.8 ou superior
+
+Pip (gerenciador de pacotes Python)
+
+Navegador moderno (Chrome, Firefox, Edge)
+
+🚀 Como Executar
+Clone o repositório:
+
+bash
+Copy
+git clone https://github.com/seu-usuario/Gerenciador_de_Tarefas_Web.git
+Acesse o diretório do projeto:
+
+bash
+Copy
+cd Gerenciador_de_Tarefas_Web
+Instale as dependências:
+
+bash
+Copy
+pip install -r requirements.txt
+Execute a aplicação:
+
+bash
+Copy
+python app.py
+Acesse no navegador:
+
+Copy
+http://localhost:5000
+📝 Licença
+Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
+
+🤝 Contribuição
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
+
+Desenvolvido com ❤️ por Rui Diniz - Gerenciador de Tarefas Web 2025
