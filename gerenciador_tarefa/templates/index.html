@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Gerenciador de Tarefas</h1>
+
+<a href="{{ url_for('adicionar_tarefa') }}" class="btn btn-primary mb-3">Adicionar Tarefa</a>
+<a href="{{ url_for('historico') }}" class="btn btn-secondary mb-3">Ver Histórico</a>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tarefa</th>
+                <th>Descrição</th>
+                <th>Data de Entrega</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tarefa in tarefas %}
+            <tr class="{% if tarefa.verificar_prazo() == 'atrasada' %}table-danger
+                       {% elif tarefa.verificar_prazo() == 'proximo' %}table-warning{% endif %}">
+                <td>{{ tarefa.nome }}</td>
+                <td>{{ tarefa.descricao }}</td>
+                <td>{{ tarefa.data_entrega.strftime('%d/%m/%Y') }}</td>
+                <td>
+                    {% if tarefa.verificar_prazo() == 'atrasada' %}
+                        <span class="badge bg-danger">Atrasada</span>
+                    {% elif tarefa.verificar_prazo() == 'proximo' %}
+                        <span class="badge bg-warning text-dark">Prazo próximo</span>
+                    {% else %}
+                        <span class="badge bg-success">No prazo</span>
+                    {% endif %}
+                    ({{ tarefa.dias_para_entrega() }} dias)
+                </td>
+                <td>
+                    <a href="{{ url_for('concluir_tarefa', tarefa_id=tarefa.id) }}" class="btn btn-sm btn-success">
+                        Concluir
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

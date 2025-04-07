@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Histórico de Tarefas</h1>
+
+<a href="{{ url_for('index') }}" class="btn btn-primary mb-3">Voltar</a>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tarefa</th>
+                <th>Criação</th>
+                <th>Entrega</th>
+                <th>Conclusão</th>
+                <th>Status</th>
+                <th>Duração (dias)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in historico %}
+            <tr class="{% if item.status == 'atrasada' %}table-danger{% endif %}">
+                <td>{{ item.nome }}</td>
+                <td>{{ item.data_criacao.strftime('%d/%m/%Y') }}</td>
+                <td>{{ item.data_entrega.strftime('%d/%m/%Y') }}</td>
+                <td>{{ item.data_conclusao.strftime('%d/%m/%Y') }}</td>
+                <td>
+                    {% if item.status == 'atrasada' %}
+                        <span class="badge bg-danger">Atrasada</span>
+                    {% else %}
+                        <span class="badge bg-success">No prazo</span>
+                    {% endif %}
+                </td>
+                <td>{{ item.dias_realizacao }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
