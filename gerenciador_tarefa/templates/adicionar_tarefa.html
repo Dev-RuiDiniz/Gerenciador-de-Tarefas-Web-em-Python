@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Adicionar Nova Tarefa</h1>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="nome" class="form-label">Nome da Tarefa</label>
+        <input type="text" class="form-control" id="nome" name="nome" required>
+    </div>
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="data_entrega" class="form-label">Data de Entrega</label>
+        <input type="date" class="form-control" id="data_entrega" name="data_entrega" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Adicionar</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

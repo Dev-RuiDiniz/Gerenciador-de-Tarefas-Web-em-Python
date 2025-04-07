@@ -1,0 +1,10 @@
+/gerenciador_tarefas
+  /static
+    /css
+      style.css
+  /templates
+    base.html
+    index.html
+    adicionar_tarefa.html
+    historico.html
+  app.py
