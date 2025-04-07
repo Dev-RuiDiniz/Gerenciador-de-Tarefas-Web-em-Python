@@ -11,11 +11,13 @@ Um sistema web completo para gerenciamento de tarefas pessoais ou profissionais,
 - Validação automática para evitar datas no passado
 - Sistema de Alertas Visuais
 
+
 🟡 Destaque amarelo para tarefas com menos de 2 dias para o prazo
 🔴 Destaque vermelho para tarefas atrasadas
 ✅ Indicador visual para tarefas concluídas
 
 Histórico Completo
+
 
 Armazenamento de todos os dados da tarefa:
 - Nome e descrição
@@ -33,10 +35,13 @@ Navegação intuitiva e organização visual clara
 
 🛠️ Tecnologias Utilizadas
 
+
 Backend:
+
 Python 3.8+
 Flask (para roteamento e lógica de aplicação)
 SQLite (banco de dados embutido)
+
 
 Frontend:
 
