@@ -71,6 +71,7 @@ def historico():
     
     for tarefa in tarefas_concluidas:
         historico.append({
+            'id': tarefa.id,
             'nome': tarefa.nome,
             'data_criacao': tarefa.data_criacao,
             'data_entrega': tarefa.data_entrega,
@@ -80,6 +81,35 @@ def historico():
         })
     
     return render_template('historico.html', historico=historico)
+from flask import redirect, url_for, request, flash
+
+@app.route('/excluir_tarefa/<int:id>', methods=['POST'])
+def excluir_tarefa(id):
+    tarefa = Tarefa.query.get_or_404(id)
+    db.session.delete(tarefa)
+    db.session.commit()
+    flash('Tarefa excluída com sucesso.', 'success')
+    return redirect(url_for('historico'))
+@app.route('/editar/<int:tarefa_id>', methods=['GET', 'POST'])
+
+def editar_tarefa(tarefa_id):
+    tarefa = Tarefa.query.get_or_404(tarefa_id)
+
+    if request.method == 'POST':
+        tarefa.nome = request.form['nome']
+        tarefa.descricao = request.form['descricao']
+        
+        try:
+            tarefa.data_entrega = datetime.strptime(request.form['data_entrega'], '%Y-%m-%d')
+        except ValueError:
+            flash('Formato de data inválido. Use YYYY-MM-DD.', 'danger')
+            return redirect(url_for('editar_tarefa', tarefa_id=tarefa.id))
+
+        db.session.commit()
+        flash('Tarefa atualizada com sucesso!', 'success')
+        return redirect(url_for('index'))
+
+    return render_template('editar_tarefa.html', tarefa=tarefa)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Editar Serviço</h1>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="nome" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="nome" name="nome" value="{{ tarefa.nome }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        <textarea class="form-control" id="descricao" name="descricao" rows="3" required>{{ tarefa.descricao }}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="data_entrega" class="form-label">Data de Entrega</label>
+        <input type="date" class="form-control" id="data_entrega" name="data_entrega" value="{{ tarefa.data_entrega.strftime('%Y-%m-%d') }}" required>
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar Alterações</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
