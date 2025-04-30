@@ -90,8 +90,8 @@ def excluir_tarefa(id):
     db.session.commit()
     flash('Tarefa excluída com sucesso.', 'success')
     return redirect(url_for('historico'))
-@app.route('/editar/<int:tarefa_id>', methods=['GET', 'POST'])
 
+@app.route('/editar/<int:tarefa_id>', methods=['GET', 'POST'])
 def editar_tarefa(tarefa_id):
     tarefa = Tarefa.query.get_or_404(tarefa_id)
 
