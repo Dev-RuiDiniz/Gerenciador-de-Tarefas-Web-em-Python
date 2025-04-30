@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="mb-4">Gerenciador de Tarefas</h1>
+<h1 class="mb-4">Gerenciador de Serviços</h1>
 
-<a href="{{ url_for('adicionar_tarefa') }}" class="btn btn-primary mb-3">Adicionar Tarefa</a>
+<a href="{{ url_for('adicionar_tarefa') }}" class="btn btn-primary mb-3">Adicionar Serviço</a>
 <a href="{{ url_for('historico') }}" class="btn btn-secondary mb-3">Ver Histórico</a>
 
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Tarefa</th>
+                <th>Serviços</th>
                 <th>Descrição</th>
-                <th>Data de Entrega</th>
+                <th>Prazo de Entrega</th>
                 <th>Status</th>
                 <th>Ações</th>
             </tr>
@@ -37,6 +37,9 @@
                 <td>
                     <a href="{{ url_for('concluir_tarefa', tarefa_id=tarefa.id) }}" class="btn btn-sm btn-success">
                         Concluir
+                    </a>
+                    <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa.id) }}" class="btn btn-sm btn-warning">
+                        Editar
                     </a>
                 </td>
             </tr>
