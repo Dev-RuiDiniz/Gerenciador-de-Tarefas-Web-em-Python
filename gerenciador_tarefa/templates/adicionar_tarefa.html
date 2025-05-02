@@ -1,44 +1,69 @@
 {% extends "base.html" %}
+<!-- Estende o layout base do projeto, herdando estrutura e estilos comuns -->
 
 {% block content %}
+<!-- Início do bloco de conteúdo específico da página -->
+
 <h1 class="mb-4">Adicionar Novo Serviço</h1>
+<!-- Título da página com margem inferior -->
 
 <form method="POST">
+    <!-- Formulário que envia dados via método POST -->
+    
     <div class="mb-3">
+        <!-- Campo de entrada para o nome do serviço -->
         <label for="nome" class="form-label">Serviço</label>
         <input type="text" class="form-control" id="nome" name="nome" required>
+        <!-- Campo obrigatório -->
     </div>
+
     <div class="mb-3">
+        <!-- Campo de texto para a descrição do serviço -->
         <label for="descricao" class="form-label">Descrição</label>
         <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+        <!-- Campo opcional com 3 linhas de altura -->
     </div>
 
     <div class="form-check form-switch mb-3">
+        <!-- Interruptor (toggle) para indicar se o serviço é de garantia -->
         <input class="form-check-input" type="checkbox" id="garantia" name="garantia" onchange="togglePrazo(this)">
         <label class="form-check-label" for="garantia">É um serviço de garantia (urgente)</label>
+        <!-- Ao mudar o estado, chama a função togglePrazo -->
     </div>
 
     <div class="mb-3" id="prazo-container">
+        <!-- Campo de data para o prazo de entrega -->
         <label for="data_entrega" class="form-label">Prazo de Entrega</label>
         <input type="date" class="form-control" id="data_entrega" name="data_entrega">
+        <!-- Este campo pode ser escondido caso seja um serviço de garantia -->
     </div>
 
+    <!-- Botões de ação -->
     <button type="submit" class="btn btn-primary">Adicionar</button>
+    <!-- Botão para enviar o formulário -->
     <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+    <!-- Link para voltar à página inicial -->
 </form>
 
 <script>
 function togglePrazo(checkbox) {
+    // Função chamada ao marcar/desmarcar o checkbox "garantia"
+    
     const prazoContainer = document.getElementById('prazo-container');
     const prazoInput = document.getElementById('data_entrega');
+
     if (checkbox.checked) {
+        // Se for serviço de garantia, oculta o campo de prazo e o torna não obrigatório
         prazoContainer.style.display = 'none';
         prazoInput.required = false;
         prazoInput.value = '';
     } else {
+        // Caso contrário, exibe o campo de prazo e o torna obrigatório
         prazoContainer.style.display = 'block';
         prazoInput.required = true;
     }
 }
 </script>
+
 {% endblock %}
+<!-- Fim do bloco de conteúdo -->
