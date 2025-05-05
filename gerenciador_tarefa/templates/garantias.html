@@ -3,56 +3,69 @@
 {% block content %}
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-4">Lista de Garantias</h1>
-        <a href="{{ url_for('adicionar_garantia') }}" class="btn btn-primary mb-3">Adicionar Garantia</a>
+        <h1 class="mb-4">Gerenciador de Garantias</h1>
+        <a href="{{ url_for('adicionar_garantia') }}" class="btn btn-primary mb-3">
+            <i class="bi bi-plus-circle"></i> Adicionar Garantia
+        </a>
     </div>
 
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th>Nome</th>
                     <th>Descrição</th>
-                    <th>Início</th>
-                    <th>Fim</th>
+                    <th>Data de Entrada</th>
                     <th>Status</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for garantia in garantias %}
-                <tr class="{% if garantia.status == 'expirada' %}table-danger
-                           {% elif garantia.status == 'proximo' %}table-warning{% endif %}">
+                <tr class="{% if garantia.verificar_prazo() == 'atrasada' %}table-danger
+                           {% elif garantia.verificar_prazo() == 'proximo' %}table-warning
+                           {% else %}table-success{% endif %}">
                     <td>{{ garantia.nome }}</td>
-                    <td>{{ garantia.descricao }}</td>
-                    <td>{{ garantia.data_inicio.strftime('%d/%m/%Y') }}</td>
-                    <td>{{ garantia.data_fim.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ garantia.descricao|default('Sem descrição', true) }}</td>
+                    <td>{{ garantia.data_criacao.strftime('%Y-%m-%d') }}</td>
                     <td>
-                        {% if garantia.status == 'expirada' %}
-                            <span class="badge bg-danger">Expirada</span>
-                        {% elif garantia.status == 'proximo' %}
-                            <span class="badge bg-warning text-dark">Próximo do fim</span>
+                        {{ garantia.data_entrega.strftime('%Y-%m-%d') }}
+                        <small class="text-muted d-block">({{ garantia.dias_para_entrega() }} dias)</small>
+                    </td>
+                    <td>
+                        {% if garantia.verificar_prazo() == 'atrasada' %}
+                            <span class="badge bg-danger">Atrasada</span>
+                        {% elif garantia.verificar_prazo() == 'proximo' %}
+                            <span class="badge bg-warning text-dark">Prazo próximo</span>
+                        {% elif garantia.concluida %}
+                            <span class="badge bg-secondary">Concluída</span>
                         {% else %}
                             <span class="badge bg-success">Ativa</span>
                         {% endif %}
-                        <!-- Adicione dias restantes se tiver essa informação -->
-                        <!-- ({{ garantia.dias_restantes() }} dias) -->
                     </td>
-                    <td>
+                    <td class="text-nowrap">
+                        {% if not garantia.concluida %}
                         <a href="{{ url_for('concluir_garantia', garantia_id=garantia.id) }}" class="btn btn-sm btn-success">
                             Concluir
                         </a>
+                        {% endif %}
                         <a href="{{ url_for('editar_garantia', garantia_id=garantia.id) }}" class="btn btn-sm btn-warning">
                             Editar
                         </a>
-                        <form method="POST" action="{{ url_for('excluir_garantia', id=garantia.id) }}" onsubmit="return confirm('Deseja realmente excluir esta garantia?');" style="display: inline;">
+                        <form method="POST" action="{{ url_for('excluir_garantia', id=garantia.id) }}" 
+                              onsubmit="return confirm('Deseja realmente excluir esta garantia?');" 
+                              style="display: inline;">
                             <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
                         </form>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="6" class="text-center">Nenhuma garantia cadastrada</td>
+                    <td colspan="6" class="text-center py-4">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> Nenhuma garantia cadastrada
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

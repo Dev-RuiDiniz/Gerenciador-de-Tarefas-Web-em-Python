@@ -59,6 +59,29 @@
             padding-left: 280px; /* Espaço para o logo */
         }
 
+        /* Estilo do botão moderno verde claro */
+        .btn-modern {
+            background: linear-gradient(135deg, #7ed56f, #55c57a);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            margin: 0 5px;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            color: white;
+            background: linear-gradient(135deg, #55c57a, #28b485);
+        }
+
         @media (max-width: 992px) {
             nav.navbar {
                 padding-left: 15px;
@@ -66,13 +89,17 @@
             .logo-topo {
                 width: 180px;
             }
+            .btn-modern {
+                margin: 5px 0;
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <img src="{{ url_for('static', filename='img/logo_topo.png') }}" alt="Logo" class="logo-topo">
 
-    <!-- Navbar corrigido -->
+    <!-- Navbar com botões verdes -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -81,13 +108,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a href="{{ url_for('index') }}" class="btn btn-secondary">Serviços</a>
+                        <a href="{{ url_for('index') }}" class="btn btn-modern">Serviços</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('lista_garantias') }}" class="btn btn-secondary">Garantias</a>
+                        <a href="{{ url_for('lista_garantias') }}" class="btn btn-modern">Garantias</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('historico') }}" class="btn btn-secondary">Histórico Completo</a>
+                        <a href="{{ url_for('historico') }}" class="btn btn-modern">Histórico Completo</a>
                     </li>
                 </ul>
             </div>

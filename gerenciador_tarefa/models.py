@@ -6,8 +6,7 @@ db = SQLAlchemy()  # Cria uma instância do SQLAlchemy para integração com o F
 # Define a classe "Tarefa" como um modelo do banco de dados
 class Tarefa(db.Model):
     # Coluna ID (chave primária, valor inteiro único e auto incrementável)
-    id = db.Column(db.Integer, primary_key=True)
-
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # Nome da tarefa, obrigatório (não pode ser nulo), com limite de 100 caracteres
     nome = db.Column(db.String(100), nullable=False)
 
@@ -54,22 +53,34 @@ class Tarefa(db.Model):
         return "no prazo" if self.data_conclusao <= self.data_entrega else "atrasada"  # Verifica se foi concluída em tempo
 
 class Garantia(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100), nullable=False)
     descricao = db.Column(db.Text)
-    data_inicio = db.Column(db.DateTime, default=datetime.utcnow)
-    data_fim = db.Column(db.DateTime, nullable=False)
-    concluida = db.Column(db.Boolean, default=False)  # Adicione esta linha
-    data_conclusao = db.Column(db.DateTime)  # Adicione esta linha
-    
-    # Adicione este método para verificar status
-    def verificar_status(self):
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)  # antes era data_inicio
+    data_entrega = db.Column(db.DateTime, nullable=False)           # antes era data_fim
+    data_conclusao = db.Column(db.DateTime)
+    concluida = db.Column(db.Boolean, default=False)
+
+    def verificar_prazo(self):
+        hoje = datetime.utcnow()
         if self.concluida:
-            if self.data_fim < self.data_conclusao:
-                return 'expirada'
-            return 'concluida'
-        if self.data_fim < datetime.utcnow():
-            return 'expirada'
-        if (self.data_fim - datetime.utcnow()) <= timedelta(days=30):
-            return 'proximo'
-        return 'ativa'
+            return "concluída"
+        elif self.data_entrega < hoje:
+            return "atrasada"
+        elif (self.data_entrega - hoje) <= timedelta(days=3):
+            return "proximo"
+        else:
+            return "normal"
+
+    def dias_para_entrega(self):
+        if self.concluida:
+            return (self.data_conclusao - self.data_criacao).days
+        elif self.data_entrega < datetime.utcnow():
+            return (datetime.utcnow() - self.data_criacao).days
+        else:
+            return (self.data_entrega - datetime.utcnow()).days
+
+    def status_entrega(self):
+        if not self.concluida:
+            return "pendente"
+        return "no prazo" if self.data_conclusao <= self.data_entrega else "atrasada"

@@ -1,23 +1,40 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% block content %}
-<h2>Adicionar Garantia</h2>
+<h1 class="mb-4">Adicionar Nova Garantia</h1>
+
 <form method="POST">
-    <div class="form-group">
-        <label for="nome">Nome</label>
-        <input type="text" name="nome" class="form-control" required>
+    <div class="mb-3">
+        <label for="nome" class="form-label">Garantia</label>
+        <input type="text" class="form-control" id="nome" name="nome" required>
     </div>
-    <div class="form-group">
-        <label for="descricao">Descrição</label>
-        <textarea name="descricao" class="form-control"></textarea>
+
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
     </div>
-    <div class="form-group">
-        <label for="data_inicio">Data de Início</label>
-        <input type="date" name="data_inicio" class="form-control" required>
+
+    <div class="mb-3" id="prazo-container">
+        <label for="data_entrega" class="form-label">Prazo de Entrega</label>
+        <input type="date" class="form-control" id="data_entrega" name="data_entrega" required min="{{ date.today().isoformat() }}">
     </div>
-    <div class="form-group">
-        <label for="data_fim">Data de Fim</label>
-        <input type="date" name="data_fim" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-success">Salvar</button>
+
+    <button type="submit" class="btn btn-primary">Adicionar</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
 </form>
+
+<script>
+function togglePrazo(checkbox) {
+    const prazoContainer = document.getElementById('prazo-container');
+    const prazoInput = document.getElementById('data_entrega');
+    if (checkbox.checked) {
+        prazoContainer.style.display = 'none';
+        prazoInput.required = false;
+        prazoInput.value = '';
+    } else {
+        prazoContainer.style.display = 'block';
+        prazoInput.required = true;
+    }
+}
+</script>
 {% endblock %}
