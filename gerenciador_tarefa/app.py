@@ -174,10 +174,10 @@ def lista_garantias():
     expired, nearing = [], []
 
     for garantia in garantias:
-        if garantia.data_entrega < hoje:
+        if garantia.data_entrega.date() < hoje:  # Converte para 'date'
             garantia.status = 'expirada'
             expired.append(garantia.nome)
-        elif (garantia.data_entrega - hoje) <= timedelta(days=30):
+        elif (garantia.data_entrega.date() - hoje) <= timedelta(days=30):  # Converte para 'date'
             garantia.status = 'proximo'
             nearing.append(garantia.nome)
         else:
@@ -189,6 +189,7 @@ def lista_garantias():
         flash(f'Garantias próximas do vencimento: {", ".join(nearing)}', 'warning')
 
     return render_template('garantias.html', garantias=garantias)
+
 
 @app.route('/adicionar_garantia', methods=['GET', 'POST'])
 def adicionar_garantia():
