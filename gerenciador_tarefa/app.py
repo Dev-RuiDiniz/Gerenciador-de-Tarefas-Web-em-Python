@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta    
 from models import db, Tarefa
 
 app = Flask(__name__)
