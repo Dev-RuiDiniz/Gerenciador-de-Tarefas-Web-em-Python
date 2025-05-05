@@ -17,9 +17,9 @@
             position: relative;
             min-height: 100vh;
             margin: 0;
+            padding-top: 80px; /* Espaço para o logo */
         }
-    
-        /* Marca d’água central */
+
         body::before {
             content: "";
             background: url('{{ url_for('static', filename='img/logo_fundo.png') }}') no-repeat center center;
@@ -32,26 +32,68 @@
             height: 100%;
             z-index: 0;
         }
-    
-        /* Logo visível no canto superior esquerdo */
+
         .logo-topo {
-            position: absolute;
+            position: fixed;
             top: 15px;
-            left: -10px;
-            z-index: 2;
+            left: 15px;
+            z-index: 1030; /* Acima do navbar */
             width: 250px;
             opacity: 0.85;
         }
-    
+
         .container {
             position: relative;
             z-index: 1;
             padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        nav.navbar {
+            z-index: 1020;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding-left: 280px; /* Espaço para o logo */
+        }
+
+        @media (max-width: 992px) {
+            nav.navbar {
+                padding-left: 15px;
+            }
+            .logo-topo {
+                width: 180px;
+            }
         }
     </style>
 </head>
 <body>
     <img src="{{ url_for('static', filename='img/logo_topo.png') }}" alt="Logo" class="logo-topo">
+
+    <!-- Navbar corrigido -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Serviços</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('lista_garantias') }}">Garantias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('historico') }}">Histórico</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-4">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

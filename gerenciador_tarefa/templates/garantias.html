@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Lista de Garantias</h1>
+        <a href="{{ url_for('adicionar_garantia') }}" class="btn btn-primary">Adicionar Garantia</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Início</th>
+                    <th>Fim</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for garantia in garantias %}
+                <tr>
+                    <td>{{ garantia.nome }}</td>
+                    <td>{{ garantia.descricao }}</td>
+                    <td>{{ garantia.data_inicio.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ garantia.data_fim.strftime('%d/%m/%Y') }}</td>
+                    <td>
+                        {% if garantia.status == 'expirada' %}
+                            <span class="badge bg-danger">Expirada</span>
+                        {% elif garantia.status == 'proximo' %}
+                            <span class="badge bg-warning text-dark">Próximo</span>
+                        {% else %}
+                            <span class="badge bg-success">Ativa</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhuma garantia cadastrada</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

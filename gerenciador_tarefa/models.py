@@ -52,3 +52,11 @@ class Tarefa(db.Model):
         if not self.concluida:
             return "pendente"  # Ainda não foi concluída
         return "no prazo" if self.data_conclusao <= self.data_entrega else "atrasada"  # Verifica se foi concluída em tempo
+
+class Garantia(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    descricao = db.Column(db.Text, nullable=True)
+    data_inicio = db.Column(db.Date, nullable=False, default=datetime.utcnow)
+    data_fim = db.Column(db.Date, nullable=False)
+    ativo = db.Column(db.Boolean, default=True)

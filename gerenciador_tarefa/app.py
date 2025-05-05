@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from datetime import datetime, timedelta    
-from models import db, Tarefa
+from datetime import datetime
+from models import db, Tarefa, Garantia
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tarefas.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'sua_chave_secreta_aqui'
+app.secret_key = 'sua_chave_secreta_aqui'  # Substitua por uma chave segura em produção
 
 db.init_app(app)
 
@@ -18,19 +18,24 @@ def index():
     hoje = datetime.utcnow()
     
     for tarefa in tarefas:
-        if tarefa.verificar_prazo() == "atrasada":
+        status = tarefa.verificar_prazo()
+        if status == "atrasada":
             flash(f'Tarefa "{tarefa.nome}" está ATRASADA!', 'danger')
-        elif tarefa.verificar_prazo() == "proximo":
+        elif status == "proximo":
             flash(f'Tarefa "{tarefa.nome}" está com prazo próximo (2 dias ou menos)', 'warning')
     
     return render_template('index.html', tarefas=tarefas, hoje=hoje)
 
-@app.route('/adicionar', methods=['GET', 'POST'])
+@app.route('/adicionar_tarefa', methods=['GET', 'POST'])
 def adicionar_tarefa():
     if request.method == 'POST':
-        nome = request.form['nome']
-        descricao = request.form['descricao']
-        data_entrega_str = request.form['data_entrega']
+        nome = request.form.get('nome', '').strip()
+        descricao = request.form.get('descricao', '').strip()
+        data_entrega_str = request.form.get('data_entrega', '')
+        
+        if not nome:
+            flash('O nome da tarefa é obrigatório.', 'danger')
+            return redirect(url_for('adicionar_tarefa'))
         
         try:
             data_entrega = datetime.strptime(data_entrega_str, '%Y-%m-%d')
@@ -81,7 +86,6 @@ def historico():
         })
     
     return render_template('historico.html', historico=historico)
-from flask import redirect, url_for, request, flash
 
 @app.route('/excluir_tarefa/<int:id>', methods=['POST'])
 def excluir_tarefa(id):
@@ -91,16 +95,20 @@ def excluir_tarefa(id):
     flash('Tarefa excluída com sucesso.', 'success')
     return redirect(url_for('historico'))
 
-@app.route('/editar/<int:tarefa_id>', methods=['GET', 'POST'])
+@app.route('/editar_tarefa/<int:tarefa_id>', methods=['GET', 'POST'])
 def editar_tarefa(tarefa_id):
     tarefa = Tarefa.query.get_or_404(tarefa_id)
 
     if request.method == 'POST':
-        tarefa.nome = request.form['nome']
-        tarefa.descricao = request.form['descricao']
+        tarefa.nome = request.form.get('nome', '').strip()
+        tarefa.descricao = request.form.get('descricao', '').strip()
+        
+        if not tarefa.nome:
+            flash('O nome da tarefa é obrigatório.', 'danger')
+            return redirect(url_for('editar_tarefa', tarefa_id=tarefa.id))
         
         try:
-            tarefa.data_entrega = datetime.strptime(request.form['data_entrega'], '%Y-%m-%d')
+            tarefa.data_entrega = datetime.strptime(request.form.get('data_entrega', ''), '%Y-%m-%d')
         except ValueError:
             flash('Formato de data inválido. Use YYYY-MM-DD.', 'danger')
             return redirect(url_for('editar_tarefa', tarefa_id=tarefa.id))
@@ -110,6 +118,58 @@ def editar_tarefa(tarefa_id):
         return redirect(url_for('index'))
 
     return render_template('editar_tarefa.html', tarefa=tarefa)
+
+@app.route('/garantias')
+def lista_garantias():
+    garantias = Garantia.query.order_by(Garantia.data_fim).all()
+    hoje = datetime.utcnow()
+    
+    for garantia in garantias:
+        if garantia.data_fim < hoje:
+            garantia.status = 'expirada'
+        elif (garantia.data_fim - hoje) <= timedelta(days=30):
+            garantia.status = 'proximo'
+        else:
+            garantia.status = 'ativa'
+    
+    return render_template('garantias.html', garantias=garantias)
+
+@app.route('/adicionar_garantia', methods=['GET', 'POST'])
+def adicionar_garantia():
+    if request.method == 'POST':
+        nome = request.form.get('nome', '').strip()
+        descricao = request.form.get('descricao', '').strip()
+        data_inicio_str = request.form.get('data_inicio', '')
+        data_fim_str = request.form.get('data_fim', '')
+        
+        if not nome:
+            flash('O nome da garantia é obrigatório.', 'danger')
+            return redirect(url_for('adicionar_garantia'))
+        
+        try:
+            data_inicio = datetime.strptime(data_inicio_str, '%Y-%m-%d')
+            data_fim = datetime.strptime(data_fim_str, '%Y-%m-%d')
+        except ValueError:
+            flash('Formato de data inválido. Use YYYY-MM-DD.', 'danger')
+            return redirect(url_for('adicionar_garantia'))
+
+        if data_fim < data_inicio:
+            flash('A data final deve ser após a data inicial.', 'danger')
+            return redirect(url_for('adicionar_garantia'))
+
+        nova_garantia = Garantia(
+            nome=nome, 
+            descricao=descricao, 
+            data_inicio=data_inicio, 
+            data_fim=data_fim
+        )
+        
+        db.session.add(nova_garantia)
+        db.session.commit()
+        flash('Garantia adicionada com sucesso!', 'success')
+        return redirect(url_for('lista_garantias'))
+    
+    return render_template('adicionar_garantia.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
