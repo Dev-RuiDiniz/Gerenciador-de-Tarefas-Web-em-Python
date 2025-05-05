@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="mb-4">Gerenciador de Serviços</h1>
-
-<a href="{{ url_for('adicionar_tarefa') }}" class="btn btn-primary mb-3">Adicionar Serviço</a>
-<a href="{{ url_for('historico') }}" class="btn btn-secondary mb-3">Ver Histórico</a>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-4">Gerenciador de Serviços</h1>
+        <a href="{{ url_for('adicionar_tarefa') }}" class="btn btn-primary mb-3">Adicionar Serviço</a>
+    </div>
 
 <div class="table-responsive">
     <table class="table table-striped">
@@ -40,6 +41,9 @@
                     </a>
                     <a href="{{ url_for('editar_tarefa', tarefa_id=tarefa.id) }}" class="btn btn-sm btn-warning">
                         Editar
+                    </a>
+                    <form method="POST" action="{{ url_for('excluir_tarefa', id=tarefa.id) }}" onsubmit="return confirm('Deseja realmente excluir esta tarefa?');" style="display: inline;">
+                        <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
                     </a>
                 </td>
             </tr>

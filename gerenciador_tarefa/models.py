@@ -56,7 +56,20 @@ class Tarefa(db.Model):
 class Garantia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    descricao = db.Column(db.Text, nullable=True)
-    data_inicio = db.Column(db.Date, nullable=False, default=datetime.utcnow)
-    data_fim = db.Column(db.Date, nullable=False)
-    ativo = db.Column(db.Boolean, default=True)
+    descricao = db.Column(db.Text)
+    data_inicio = db.Column(db.DateTime, default=datetime.utcnow)
+    data_fim = db.Column(db.DateTime, nullable=False)
+    concluida = db.Column(db.Boolean, default=False)  # Adicione esta linha
+    data_conclusao = db.Column(db.DateTime)  # Adicione esta linha
+    
+    # Adicione este método para verificar status
+    def verificar_status(self):
+        if self.concluida:
+            if self.data_fim < self.data_conclusao:
+                return 'expirada'
+            return 'concluida'
+        if self.data_fim < datetime.utcnow():
+            return 'expirada'
+        if (self.data_fim - datetime.utcnow()) <= timedelta(days=30):
+            return 'proximo'
+        return 'ativa'
